@@ -14,13 +14,13 @@ public class GFA {
         //System.out.println(args[0]);
         
         
-        int k = Integer.parseInt(args[0]);
-        int dd = k-1;
+        int k = Integer.parseInt(args[0]);      //give kmer size as user input
+        int dd = k-1;                           //dd is k-1 (overlap)
         String d = Integer.toString(dd);
         
-        BufferedReader br = new BufferedReader(new FileReader(args[1]));
+        BufferedReader br = new BufferedReader(new FileReader(args[1]));    //file in userinput
         String line = null;
-        line = br.readLine();
+        line = br.readLine();                       //read file and split on tabs, put in array
         String[] cols1 = line.split("\t");
         String recordType = cols1[0];
         String version = cols1[1];
@@ -28,28 +28,28 @@ public class GFA {
         
         if (recordType.equals("H")){
             
-            if (version.equals("VN:Z:1.0")){
-                System.out.println("digraph adj {"+"\n"+"graph [k="+k+"]"+"\n"+"edge [d=-"+d+"]");
+            if (version.equals("VN:Z:1.0")){                //if version is this go on
+                System.out.println("digraph adj {"+"\n"+"graph [k="+k+"]"+"\n"+"edge [d=-"+d+"]");      //create header
                 while ((line = br.readLine()) !=null) {
-                    String cols[] = line.split("\t");
-                    //System.out.println(cols[1]);
+                    String cols[] = line.split("\t");                   //when line is not empty split file on tabs and store in String cols
+
                     recordType = cols[0];
-                    if (recordType.equals("S")) {
+                    if (recordType.equals("S")) {                       //if Type is S go on
 
                         String id = cols[1];
-                        //System.out.println(id);
-                        //String sequence = cols[2];
+
                         String lengthwith = cols[3];
                         String length = lengthwith.replaceAll("[^0-9]", "");
                         String kmerwith = cols[4];
-                        String kmer = kmerwith.replaceAll("[^0-9]", "");
+                        String kmer = kmerwith.replaceAll("[^0-9]", "");            //extract only numbers from string
+
 
 
                         System.out.println(('"'+id+"+"+'"')+" "+"[l="+length+" "+"C="+kmer+"]"+"\n"
-                                +('"'+id+"-"+'"')+" "+"[l="+length+" "+"C="+kmer+"]");
+                                +('"'+id+"-"+'"')+" "+"[l="+length+" "+"C="+kmer+"]");                      //hardcode file format
 
                     }
-                    else if (recordType.equals("L")) {
+                    else if (recordType.equals("L")) {                                      //when in first column is an L go on
                         String id2 = cols[1];
                         String orientation = cols[2];
                         String start = cols[3];
@@ -64,13 +64,13 @@ public class GFA {
                         }
                         else {
                             System.out.println(('"'+id2+orientation+'"')+" "+"-> "+('"'+start+orientation2+'"')+" "+"[d=-"+overlap+"]"+"\n"
-                            +'"'+start+"-"+'"'+" -> "+'"'+id2+"-"+'"'+"[d=-"+overlap+"]");
+                            +'"'+start+"-"+'"'+" -> "+'"'+id2+"-"+'"'+"[d=-"+overlap+"]");                                                          //hardcode file
                         }
                     }
                 }
                 System.out.println("}");
             }
-            else{
+            else{                                                                                                               //do the same for version 2 with slight differences
                 if (version.equals("VN:Z:2.0")){
                     System.out.println("digraph adj {"+"\n"+"graph [k="+k+"]"+"\n"+"edge [d=-"+d+"]");
                     while ((line = br.readLine()) !=null) {
@@ -132,8 +132,8 @@ public class GFA {
             }
         }
         else {
-            System.out.println("Wrong document, please choose another one");
+            System.out.println("Wrong document, please choose another one");            //If wrong document give notice
         }
-                }
-        
     }
+    
+}
